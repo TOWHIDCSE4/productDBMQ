@@ -7,3 +7,4 @@ yarn.lock
 dist
 tmp
 yarn-error.log
+.env

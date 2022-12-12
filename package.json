@@ -4,7 +4,7 @@
   "description": "APP PLATFORM KDDI",
   "main": "index.js",
   "scripts": {
-    "dev-client": "cross-env MODE=dev-client nodemon -w routes -w public/static/locales",
+    "dev-client": "cross-env MODE=dev-client NODE_OPTIONS=--openssl-legacy-provider nodemon -w routes -w public/static/locales",
     "dev-server": "cross-env MODE=dev-server nodemon",
     "dev": "cross-env IS_TS_NODE=true TS_NODE_PROJECT=tsconfig.server.json node -r ts-node/register -r tsconfig-paths/register server/index.ts",
     "build:server": "tsc --project tsconfig.server.json",
