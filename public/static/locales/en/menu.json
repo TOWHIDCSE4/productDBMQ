@@ -1,0 +1,42 @@
+{
+  "frontend": {
+    "admin": {
+      "dashboard": {
+        "index": "Dashboard"
+      },
+      "users": {
+        "title": "Account Management",
+        "index": "List Of Accounts",
+        "edit": "Edit Account",
+        "create": "Add Account",
+        "twofa": "2FA Settings"
+      },
+      "application": {
+        "index": "Application",
+        "title": "Application",
+        "edit": "Edit Application",
+        "create": "Add Application",
+        "twofa": "2FA Settings"
+      },
+      "products": {
+        "index": "Products Management",
+        "title": "Products Management",
+        "edit": "Edit Products",
+        "create": "Add Products",
+        "twofa": "2FA Settings"
+      },
+      "roleGroups": {
+        "index": "Role Management",
+        "create": "Add Role ",
+        "edit": "Edit Role",
+        "role": "Decentralization Role"
+      },
+      "roles": {
+        "index": "Role of Account Management",
+        "create": "Add Role",
+        "edit": "Edit Role",
+        "role": "Decentralization Role"
+      }
+    }
+  }
+}

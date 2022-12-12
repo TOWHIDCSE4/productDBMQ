@@ -1,0 +1,14 @@
+{
+  "definitionFile": "File lang này định nghĩa danh sách các lỗi",
+  "-1": "Unable connect to server!",
+  "401": "Token has expired",
+  "403": "You are not authorized!",
+  "6000": "Role group does not exist!",
+
+  "9994": "Missing parameters",
+  "9995": "Database error",
+  "9996": "Wrong parameters",
+  "9997": "Not access",
+  "9998": "Login require!",
+  "9999": "An unknown error"
+}
