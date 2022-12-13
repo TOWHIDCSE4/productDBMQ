@@ -67,7 +67,7 @@
       }
     },
     "table": {
-      "productName": "Name",
+      "name": "Name",
       "brand": "Brand",
       "modelName": "Model Name",
       "madeIn": "Made In",
@@ -78,12 +78,11 @@
     },
     "form": {
       "productId": "Name",
-      "productName": "Name",
+      "name": "Name",
       "brand": "Brand",
       "modelName": "Model Name",
       "madeIn": "Made In",
       "price": "Price",
-      "status": "Status",
       "activeDate": "Active Date",
       "expriedDate": "Expried Date"
     }

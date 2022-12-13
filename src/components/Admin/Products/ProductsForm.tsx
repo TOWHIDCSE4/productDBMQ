@@ -12,6 +12,7 @@ const { Option } = Select;
 const ProductsForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
   const { t, getData } = useBaseHook();
   const { validatorRePassword, CustomRegex } = validatorHook();
+
   const { data: dataT } = useSWR("groupSelect2", () =>
   roleService().withAuth().select2({ pageSize: -1 })
   );
@@ -26,20 +27,20 @@ const ProductsForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
     <Row gutter={[24, 0]}>
       <Col md={24}>
         <Form.Item
-          label={t("pages:products.form.productName")}
-          name="productName"
+          label={t("pages:products.form.name")}
+          name="name"
           rules={[
-            { required: true, message: t("messages:form.required", { name: t("pages:products.form.productName") }) },
-            { whitespace: true, message: t("messages:form.required", { name: t("pages:products.form.productName") }) },
+            { required: true, message: t("messages:form.required", { name: t("pages:products.form.name") }) },
+            { whitespace: true, message: t("messages:form.required", { name: t("pages:products.form.name") }) },
             CustomRegex({
               length: 6,
               reGex: "^[0-9A-z._](\\w|\\.|_){5,100}$",
-              message: t("messages:form.productName"),
+              message: t("messages:form.name"),
             }),
           ]}
         >
           <Input
-            placeholder={t("pages:products.form.productName")}
+            placeholder={t("pages:products.form.name")}
             readOnly={isEdit}
           />
         </Form.Item>
@@ -49,7 +50,7 @@ const ProductsForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
       <Col md={12}>
         <Form.Item
           label={t("pages:products.form.brand")}
-          name="band"
+          name="brand"
           rules={[
             { required: true, message: t("messages:form.required", { name: t("pages:products.form.brand") }) },
             { whitespace: true, message: t("messages:form.required", { name: t("pages:products.form.brand") }) },
@@ -103,9 +104,8 @@ const ProductsForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
 
   
 
-      {!isEdit ? (
-        <>
-          <Col md={24}>
+   
+          {/* <Col md={24}>
             <Form.Item
               label={t("pages:products.form.status")}
               name="status"
@@ -125,9 +125,8 @@ const ProductsForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
                 ))}
               </Select>
             </Form.Item>
-          </Col>
-        </>
-      ) : null}
+          </Col> */}
+     
 
 
     </Row>

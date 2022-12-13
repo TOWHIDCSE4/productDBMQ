@@ -38,9 +38,9 @@ const Index = () => {
 
   const columns = [
     {
-      title: t("pages:products.table.productName"),
-      dataIndex: "productName",
-      key: "products.productName",
+      title: t("pages:products.table.name"),
+      dataIndex: "name",
+      key: "products.name",
       sorter: true,
       filterable: true,
     },
@@ -72,13 +72,7 @@ const Index = () => {
       sorter: true,
       filterable: true,
     },
-    {
-      title: t("pages:products.table.status"),
-      dataIndex: "status",
-      key: "products.status",
-      sorter: true,
-      filterable: true,
-    },
+
     // {
     //   title: t("pages:users.table.tags"),
     //   dataIndex: "tags",
@@ -121,8 +115,9 @@ const Index = () => {
       title: t("pages:action"),
       key: 'action',
       render: (text, record) => {
-        console.log("record",record)
+      
         return (
+     <div className="editDeleteflex">
         <Space size="middle">
           <a
             type="primary"
@@ -132,9 +127,39 @@ const Index = () => {
             <EditOutlined />
           </a>
         </Space>
+        <Space size="middle">
+        <a
+              
+              onClick={() => {
+                confirmDialog({
+                  title: t("buttons:deleteItem"),
+                  content: t("messages:message.deleteConfirm"),
+                  onOk: () => onSingleDelete({ id: record.id }),
+                });
+              }}
+          >
+             <DeleteOutlined />
+          </a>
+        </Space></div>
       )}
     }
   ];
+  
+  const onSingleDelete = async (id:any) => {
+
+    let [error, result]: any[] = await to(
+      userService().withAuth().destroy(id)
+    );
+    // console.log(ids: selectedIds )
+    if (error) return notify(t(`errors:${error.code}`), "", "error");
+    notify(t("messages:message.recordUserDeleted"));
+    if (tableRef.current !== null) {
+      tableRef.current.reload();
+    }
+    setSelectedIds([]);
+    setHiddenDeleteBtn(true);
+    return result;
+  };
 
   const onChangeSelection = (data: any) => {
     if (data.length > 0) setHiddenDeleteBtn(false);

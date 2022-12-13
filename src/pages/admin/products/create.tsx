@@ -15,11 +15,11 @@ const Create = () => {
   const [form] = Form.useForm();
   //submit form
   const onFinish = async (values: any): Promise<void> => {
-    
+    console.log(values)
     setLoading(true)
     let {...otherValues } = values;
     let [error, result]: any[] = await to(productService().withAuth().create(otherValues));
-    console.log(error , otherValues)
+    
     setLoading(false)
     if (error) return notify(t(`errors:${error.code}`), '', 'error')
     notify(t("messages:message.recordProductCreated"))
@@ -31,19 +31,16 @@ const Create = () => {
     <div className="content">
       <Form
         form={form}
-        name="createAdmin"
+        name="createProduct"
         layout="vertical"
         initialValues={{
-          productId: "",
-          productName: "",
+          name: "",
           brand: "",
           modelName: "",
           madeIn: "",
           price: "",
-          status: "",
-          activeDate: "",
-          expriedDate: "",
-          tags: []
+          activeDate: "12/12/22",
+          expriedDate: "12/12/22"
         }}   
         onFinish={onFinish}
         scrollToFirstError
@@ -56,7 +53,7 @@ const Create = () => {
                 <LeftCircleFilled /> {t('buttons:back')}
               </Button>
               <Button type="primary" htmlType="submit" loading={loading} className="btn-margin-right">
-                <SaveFilled /> {t('buttons:submits')}
+                <SaveFilled /> {t('buttons:submit')}
               </Button>
             </Form.Item>
           </Col>

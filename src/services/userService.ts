@@ -10,6 +10,7 @@ class usersService extends Base {
   };
 
   create = async (data: any) => {
+   
     return this.request({
       url: "/api/v1/users",
       method: "POST",
@@ -34,6 +35,9 @@ class usersService extends Base {
   };
 
   delete = async (data: any) => {
+
+  
+
     return this.request({
       url: "/api/v1/users",
       method: "DELETE",
@@ -42,6 +46,7 @@ class usersService extends Base {
   };
 
   destroy = async (data: any) => {
+  
     return this.request({
       url: "/api/v1/users/:id",
       method: "DELETE",

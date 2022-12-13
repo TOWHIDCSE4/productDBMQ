@@ -18,6 +18,8 @@ Route.group(() => {
   // ---------------------------------- Route Routes ---------------------------------------//
   Route.get("/routes", "RouteController.index").name('routes.index')
   // ---------------------------------- End Route Routes -----------------------------------//
+  // products
+  Route.resource("/products", "ProductController").name('products')
 
   Route.group(() => {
     Route.post("/changePassword", "AuthController.changePassword").name("auth.changePassword")
@@ -43,6 +45,9 @@ Route.group(() => {
 
     // ---------------------------------- Role Group Routes ---------------------------------------//
     Route.resource("/roles", "RoleController").name('roles')
+    Route.get("/roles/select2", "RoleController.select2").name('roles.select2')
+
+  
     Route.get("/roles/select2", "RoleController.select2").name('roles.select2')
     // Route.get("/roles/selectParent", "RoleController.selectParent").name('roles.selectParent')
     // ---------------------------------- End Role Group Routes -----------------------------------//

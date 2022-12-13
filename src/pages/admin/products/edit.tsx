@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic';
 import { Button, Form, Col, Row, Spin } from 'antd';
-import userService from '@root/src/services/userService';
+import productService from '@root/src/services/productServices';
 import { confirmDialog } from '@src/helpers/dialogs'
 import to from 'await-to-js'
 import useBaseHook from '@src/hooks/BaseHook'
 import { LeftCircleFilled, SaveFilled, DeleteFilled } from '@ant-design/icons';
 import usePermissionHook from "@src/hooks/PermissionHook";
-import UserForm from '@src/components/Admin/Users/UserForm';
+import ProductsForm from '@src/components/Admin/Products/ProductsForm';
 import auth from '@src/helpers/auth'
 
 const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
@@ -33,7 +33,7 @@ const Edit = () => {
       }
     }
     if(idError) return notify(t(`errors:${idError.code}`), '', 'error')
-    let [adminError, admin]: [any, User] = await to(userService().withAuth().detail({ id: query.id }));
+    let [adminError, admin]: [any, User] = await to(productService().withAuth().detail({ id: query.id }));
     if(adminError) return notify(t(`errors:${adminError.code}`), '', 'error')
     setAdmin(admin)
   }
@@ -45,45 +45,48 @@ const Edit = () => {
   //submit form
   const onFinish = async (values: any): Promise<void> => {
     setLoading(true)
-    let [error, result]: any[] = await to(userService().withAuth().edit({
+    let [error, result]: any[] = await to(productService().withAuth().edit({
       id: admin.id,
       ...values
     }));
     setLoading(false)
     if (error) return notify(t(`errors:${error.code}`), '', 'error')
-    notify(t("messages:message.recordUserUpdated"))
+    notify(t("messages:message.recordDeleteUpdated"))
     redirect("frontend.admin.products.index")
     return result
   }
 
   const onDelete = async (): Promise<void> => {
-    let [error, result]: any[] = await to(userService().withAuth().destroy({id: admin.id}));
+    let [error, result]: any[] = await to(productService().withAuth().destroy({id: admin.id}));
     if (error) return notify(t(`errors:${error.code}`), '', 'error')
-    notify(t('messages:message.recordUserDeleted'))
+    notify(t('messages:message.recordProductDeleted'))
     redirect("frontend.admin.products.index")
     return result
   }
 
-  if(!admin) return <div className="content"><Spin /></div>
+  // if(!admin) return <div className="content"><Spin /></div>
+
   return <>
     <div className="content">
       <Form
         form={form}
         layout="vertical"
-        name="editAdmin"
+        name="editProduct"
         initialValues={{
-          firstName: admin.firstName,
-          lastName: admin.lastName,
-          username: admin.username,
-          email: admin.email,
-          tags: admin.tags || [],
+          name: "",
+          brand: "",
+          modelName: "",
+          madeIn: "",
+          price: "",
+          activeDate: "12/12/22",
+          expriedDate: "12/12/22"
         }}
         onFinish={onFinish}
         scrollToFirstError
       >
         <Row>
           <Col md={{span: 16, offset: 4}}>
-            <UserForm form={form} isEdit={true} />
+            <ProductsForm form={form} isEdit={true} />
             <Form.Item wrapperCol={{ span: 24 }} className="text-center">
               <Button onClick={() => router.back()} className="btn-margin-right">
                 <LeftCircleFilled /> {t('buttons:back')}

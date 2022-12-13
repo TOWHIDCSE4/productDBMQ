@@ -60,6 +60,8 @@ class BaseService {
   }
 
   request = async ({ url, method, data, options }: { url: string, method: "GET" | "POST" | "PUT" | "DELETE", data?: any, options?: any }) => {
+
+
     if (["GET", "POST", "PUT", "DELETE"].includes(method)) {
       let pattern = new UrlPattern(url);
       let asUrl = pattern.stringify(data)
@@ -74,6 +76,8 @@ class BaseService {
     }
 
     let newOption = this.beforeRequest({ url, data, options })
+
+ 
 
     url = newOption.url;
 
@@ -97,15 +101,21 @@ class BaseService {
       requestOptions.headers['Authorization'] = `Bearer ${this.auth.token}`;
       requestOptions.headers['TimeZone'] = moment.tz.guess();
     }
+  
+    console.log(publicRuntimeConfig.API_HOST + url, requestOptions)
+
     const result = await fetch(publicRuntimeConfig.API_HOST + url, requestOptions)
+    console.log(result)
     return await this.handleResponse(result)
   }
 
   handleResponse = async (response) => {
+
     const text = await response.text();
     let data: any = {}
     try {
       data = text && JSON.parse(text);
+  
     }
     catch (e) {
       console.log(e)

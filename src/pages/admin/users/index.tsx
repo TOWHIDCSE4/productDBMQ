@@ -102,17 +102,32 @@ const Index = () => {
       title: t("pages:action"),
       key: 'action',
       render: (text, record) => {
-        console.log("record",record)
+    
         return (
-        <Space size="middle">
-          <a
-            type="primary"
-            className="btn-top"
-            onClick={() => redirect("frontend.admin.users.edit", { id: record.id })}
-          >
-            <EditOutlined />
-          </a>
-        </Space>
+          <div className="editDeleteflex">
+          <Space size="middle">
+            <a
+              type="primary"
+              className="btn-top"
+              onClick={() => redirect("frontend.admin.users.edit", { id: record.id })}
+            >
+              <EditOutlined />
+            </a>
+          </Space>
+          <Space size="middle">
+            <a
+              
+                onClick={() => {
+                  confirmDialog({
+                    title: t("buttons:deleteItem"),
+                    content: t("messages:message.deleteConfirm"),
+                    onOk: () => onSingleDelete({ id: record.id }),
+                  });
+                }}
+            >
+               <DeleteOutlined />
+            </a>
+          </Space></div>
       )}
     }
   ];
@@ -138,10 +153,32 @@ const Index = () => {
     return users;
   };
 
+
+  const onSingleDelete = async (id:any) => {
+
+  
+
+    let [error, result]: any[] = await to(
+      userService().withAuth().destroy(id)
+    );
+    // console.log(ids: selectedIds )
+    if (error) return notify(t(`errors:${error.code}`), "", "error");
+    notify(t("messages:message.recordUserDeleted"));
+    if (tableRef.current !== null) {
+      tableRef.current.reload();
+    }
+    setSelectedIds([]);
+    setHiddenDeleteBtn(true);
+    return result;
+  };
+
+
   const onDelete = async () => {
+
     let [error, result]: any[] = await to(
       userService().withAuth().delete({ ids: selectedIds })
     );
+    // console.log(ids: selectedIds )
     if (error) return notify(t(`errors:${error.code}`), "", "error");
     notify(t("messages:message.recordUserDeleted"));
     if (tableRef.current !== null) {

@@ -10,6 +10,7 @@ class productServices extends Base {
   };
 
   create = async (data: any) => {
+   console.log(data)
     return this.request({
       url: "/api/v1/products",
       method: "POST",
