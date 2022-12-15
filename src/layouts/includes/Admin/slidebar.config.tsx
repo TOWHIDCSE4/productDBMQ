@@ -15,15 +15,23 @@ import {
   HistoryOutlined,
   CommentOutlined,
   FileTextOutlined,
-  CodepenOutlined
+  CodepenOutlined,
+  DashboardOutlined
 } from "@ant-design/icons";
 import auth from "@src/helpers/auth";
 const user = auth().user;
 
 const sidebar = [
+  // {
+  //   routeName: "frontend.admin.dashboard.index",
+  //   icon: <HomeOutlined />,
+  //   permissions: {
+  //     dashboard: "R",
+  //   },
+  // },
   {
-    routeName: "frontend.admin.dashboard.index",
-    icon: <HomeOutlined />,
+    routeName: "frontend.admin.overView.index",
+    icon: <DashboardOutlined />,
     permissions: {
       dashboard: "R",
     },

@@ -13,6 +13,11 @@ Route.group(() => {
   }
 
   {
+    let name = 'overView'
+    Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
+  }
+
+  {
     let name = 'application'
     Route.get(`/${name}`, `pages/admin/${name}`).name(`${name}.index`).sidebar(`${name}.index`)
   }

@@ -89,6 +89,7 @@ const MenuComponent = (props: any) => {
       }
       if (cookies.get('botId')) routeParams = { ...routeParams, botId: cookies.get('botId') }
       let routeInfo = makeUrl(item.routeName, routeParams, routeData || {})
+      console.log("routeInfo is ", routeInfo)
       const routeLang = {
         href: routeInfo.href || "",
         as: routeInfo.as || ""

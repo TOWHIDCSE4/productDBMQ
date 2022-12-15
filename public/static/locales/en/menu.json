@@ -4,6 +4,9 @@
       "dashboard": {
         "index": "Dashboard"
       },
+      "overView": {
+        "index": "Overview"
+      },
       "users": {
         "title": "Account Management",
         "index": "List Of Accounts",

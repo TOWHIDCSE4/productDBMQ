@@ -143,6 +143,44 @@
   },
 
 
+  "overView": {
+    "index": {
+      "title": "List Of Documents",
+      "description": ""
+    },
+    "create": {
+      "title": "Create a new document",
+      "description": "Fill out the information to add a new document"
+    },
+    "edit": {
+      "title": "Edit Document",
+      "description": ""
+    },
+    "twofa": {
+      "title": "2-FA Settings",
+      "description": "",
+      "enabledAlready": "2FA is already enabled. You can turn it off at any time. But we do not recommend it.",
+      "notEnable": "You have not enabled 2FA. Please set up 2FA to connect to your phone for enhanced security.",
+      "twoFaRequired": "2FA is required.",
+      "link": {
+        "title": "To use two-step security. You need to install the Google Authenticator app on your mobile.",
+        "link": "You can download it here:",
+        "android": "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_SG",
+        "ios": "https://apps.apple.com/us/app/google-authenticator/id388497605"
+      }
+    },
+    "table": {
+      "formId": "Form Id",
+      "formName": "Form Name"
+    },
+    "form": {
+      "formId": "Form Name",
+      "formName": "Form Name",
+      "submitter": "Submitter"
+    }
+  },
+
+
   "roleGroups": {
     "index": {
       "title": "List of Role",
