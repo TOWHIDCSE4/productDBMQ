@@ -25,23 +25,13 @@ import moment from "moment";
 import to from "await-to-js";
 import auth from "@src/helpers/auth";
 import React, { useState, useRef } from "react";
-import { confirmDialog } from "@src/helpers/dialogs";
 
-import usePermissionHook from "@src/hooks/PermissionHook";
-import {
-  PlusCircleOutlined,
-  DeleteOutlined,
-  LoginOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
-
-const Overview = () => {
+const Index = () => {
   const { redirect, t, notify } = useBaseHook();
   const { Search } = Input;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [hiddenDeleteBtn, setHiddenDeleteBtn] = useState(true);
-  // const sortIcon = <DashboardOutlined />
 
   const onSearch = (value: string) => console.log(value);
 
@@ -168,7 +158,7 @@ const Overview = () => {
   </>
 }
 
-Overview.Layout = (props) => {
+Index.Layout = (props) => {
   const { t } = useBaseHook();
   return <Layout
     title={t('pages:documents.index.title')}
@@ -177,10 +167,10 @@ Overview.Layout = (props) => {
   />
 }
 
-Overview.permissions = {
-  'overView': "R",
+Index.permissions = {
+  documents: "R",
 };
 
-export default Overview
+export default Index
 
 
