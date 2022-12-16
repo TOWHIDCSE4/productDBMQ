@@ -32,6 +32,10 @@ Route.group(() => {
     Route.get("/users/getTags", "UserController.getTags").name('users.getTags')
     Route.get("/users/getInfo", "UserController.getInfo").name('users.getInfo')
     // ---------------------------------- End User Routes -----------------------------------//
+
+     // ---------------------------------- Document Routes ---------------------------------------//
+     Route.resource("/documents", "DocumentController").name('documents')
+     // ---------------------------------- End Document Routes -----------------------------------//
     
     // ---------------------------------- Role Permission Routes ---------------------------------------//
     Route.get("/rolePermissions/getPermissionByGroupId", "RolePermissionController.getPermissionByGroupId").name('rolePermissions.getPermissionByGroupId')

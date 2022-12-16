@@ -143,7 +143,7 @@
   },
 
 
-  "overView": {
+  "documents": {
     "index": {
       "title": "List Of Documents",
       "description": ""
@@ -170,16 +170,22 @@
       }
     },
     "table": {
-      "formId": "Form Id",
-      "formName": "Form Name"
+      "formName": "Form Name",
+      "formId": "Form Name",
+      "issuedBy": "Issued By",
+      "issuedDate": "Issued Date",
+      "status": "Satus",
+      "updatedDate": "Updated Date"
     },
     "form": {
-      "formId": "Form Name",
       "formName": "Form Name",
-      "submitter": "Submitter"
+      "formId": "Form Name",
+      "issuedBy": "Issued By",
+      "issuedDate": "Issued Date",
+      "status": "Satus",
+      "updatedDate": "Updated Date"
     }
   },
-
 
   "roleGroups": {
     "index": {

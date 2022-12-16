@@ -30,7 +30,7 @@ const sidebar = [
   //   },
   // },
   {
-    routeName: "frontend.admin.overView.index",
+    routeName: "frontend.admin.documents.index",
     icon: <DashboardOutlined />,
     permissions: {
       dashboard: "R",
