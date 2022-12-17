@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic'
 import DataTable, { Alignment } from 'react-data-table-component';
 import {
-  ArrowDownOutlined
+  ArrowDownOutlined, FileSearchOutlined
 } from "@ant-design/icons";
-import { SearchOutlined, DashOutlined, SmallDashOutlined, MoreOutlined } from '@ant-design/icons';
+import { SearchOutlined, DashOutlined, SmallDashOutlined, MoreOutlined, FilePdfOutlined, FileOutlined } from '@ant-design/icons';
 import {
   Pagination,
   Spin,
@@ -13,7 +13,8 @@ import {
   Modal,
   Empty,
   Tooltip, Space, Input,
-  Badge
+  Badge,
+  Popover
 } from "antd";
 const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
 import useBaseHook from '@src/hooks/BaseHook';
@@ -92,6 +93,13 @@ const Index = () => {
     }),
   };
 
+  const downloadConent = (
+    <div>
+      <p style={{cursor: "pointer"}}><span style={{marginRight: '8px'}}><FilePdfOutlined /></span> PDF </p>
+      <p style={{cursor: "pointer"}}><span style={{marginRight: '8px'}}><FileOutlined /></span> CSV </p>
+    </div>
+  );
+
     const columns = [
       {
         title: t("pages:documents.table.formName"),
@@ -165,8 +173,12 @@ const Index = () => {
               className="btn-top"
               onClick={() => redirect("frontend.admin.users.edit", { id: record.id })}
             > */}
-              <MoreOutlined />
+              {/* <MoreOutlined /> */}
             {/* </a> */}
+
+            <Popover content={downloadConent}  trigger="click">
+              <MoreOutlined />
+            </Popover> 
           </Space>
         )}
       }
