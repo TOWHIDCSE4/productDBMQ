@@ -4,16 +4,16 @@ import {
   ArrowDownOutlined
 } from "@ant-design/icons";
 import { SearchOutlined, DashOutlined, SmallDashOutlined, MoreOutlined } from '@ant-design/icons';
-import {Tooltip, Space, Input } from 'antd';
 import {
   Pagination,
   Spin,
   Form,
   Typography,
   Button,
-  Badge,
   Modal,
   Empty,
+  Tooltip, Space, Input,
+  Badge
 } from "antd";
 const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
 import useBaseHook from '@src/hooks/BaseHook';
@@ -26,8 +26,37 @@ import to from "await-to-js";
 import auth from "@src/helpers/auth";
 import React, { useState, useRef } from "react";
 
+function checkStatus(status: string){
+  let colorObj = {  padding: '4px 8px', borderRadius: '5px', color: '#b22222', backgroundColor: '#fff6f6', width: '75px'};
+  if(status === 'Approve'){
+      colorObj = {
+        ...colorObj,
+        color: '#17B169',
+        backgroundColor: '#D0F0C0',
+        width: '70px'
+      }
+  }else if(status === 'To Be Reviewed'){
+    colorObj = {
+      ...colorObj,
+      color: '#DAA520',
+      backgroundColor: '#FFF8DC',
+      width: '120px'
+    }
+  }else if(status == 'Rejected'){
+    colorObj = {
+      ...colorObj,
+      color: '#b22222', 	
+      backgroundColor: '#fff6f6',
+      width: '75px'
+    }
+  }
+  
+  return colorObj;
+}
+
 const Index = () => {
   const { redirect, t, notify } = useBaseHook();
+  const { Title } = Typography;
   const { Search } = Input;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -70,6 +99,9 @@ const Index = () => {
         key: "documents.formName",
         sorter: true,
         filterable: true,
+        render: (text, record) => {
+          return (<strong>{text}</strong>)
+        }
       },
       {
         title: t("pages:documents.table.formId"),
@@ -98,6 +130,16 @@ const Index = () => {
         key: "documents.status",
         sorter: true,
         filterable: true,
+        render: (text, record) => {
+          console.log("for name text is ", text);
+          console.log("for name record is ",record)
+
+          return (
+            <div style={checkStatus(text)}>
+                {text}
+            </div>
+          )
+        }
       },
       {
         title: t("pages:documents.table.updatedDate"),
