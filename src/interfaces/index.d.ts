@@ -25,3 +25,13 @@ interface RoleGroup {
   key: number;
   createdAt: string;
 }
+
+interface Document {
+  id: number;
+  formName: string;
+  formId: string;
+  issuedBy: string;
+  issuedDate: string;
+  status: string;
+  updatedDate: string;
+}
