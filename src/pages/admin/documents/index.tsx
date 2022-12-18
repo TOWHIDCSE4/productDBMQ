@@ -1,9 +1,5 @@
 import dynamic from 'next/dynamic'
-import DataTable, { Alignment } from 'react-data-table-component';
-import {
-  ArrowDownOutlined, FileSearchOutlined
-} from "@ant-design/icons";
-import { SearchOutlined, DashOutlined, SmallDashOutlined, MoreOutlined, FilePdfOutlined, FileOutlined } from '@ant-design/icons';
+import { SearchOutlined, DashOutlined, FileSearchOutlined, MoreOutlined, FilePdfOutlined, FileOutlined, FilterOutlined } from '@ant-design/icons';
 import {
   Pagination,
   Spin,
@@ -33,7 +29,7 @@ function checkStatus(status: string){
       colorObj = {
         ...colorObj,
         color: '#17B169',
-        backgroundColor: '#D0F0C0',
+        backgroundColor: '#cefad0',
         width: '70px'
       }
   }else if(status === 'To Be Reviewed'){
@@ -59,6 +55,7 @@ const Index = () => {
   const { redirect, t, notify } = useBaseHook();
   const { Title } = Typography;
   const { Search } = Input;
+  const ButtonGroup = Button.Group;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [hiddenDeleteBtn, setHiddenDeleteBtn] = useState(true);
@@ -185,7 +182,35 @@ const Index = () => {
     ];
 
   return <>
+   
     <div className="content">
+          {/* <Input.Search placeholder='Serach' style={{marginBottom: 10, width: 180}}/> */}
+          {/* <Input placeholder='Serach' style={{marginBottom: 10, width: 180}}><FileOutlined /> More filters</Input> */}
+
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <div>
+                <Input size="middle" style={{width: 130, marginRight: 10}} placeholder="Serach" prefix={<SearchOutlined />} />
+                <Input size="middle" style={{width: 130, marginBottom: 20}} placeholder="More Filters" prefix={<FilterOutlined />} />
+              </div>
+
+              <div>
+                <ButtonGroup>
+                  <Button onClick={() => console.log("All button is clicked")}>
+                    <Badge count={2} style={{color: '#17B169', backgroundColor: '#cefad0'}} /> 
+                    <span style={{marginLeft: 5}}> Approve</span> 
+                  </Button>
+                  <Button onClick={() => console.log("To Be Reviewed button is clicked")}>
+                      <Badge count={1} style={{ color: '#DAA520', backgroundColor: '#FFF8DC'}} /> 
+                      <span style={{marginLeft: 5}}> To Be Reviewed</span>  
+                  </Button>
+                  <Button onClick={() => console.log("Rejected button is clicked")}>
+                      <Badge count={3} style={{ color: '#b22222', backgroundColor: '#fff6f6',}}/>
+                      <span style={{marginLeft: 5}}> Rejected</span> 
+                  </Button>
+                </ButtonGroup>
+              </div>
+          </div>
+        
           <GridTable
           ref={tableRef}
           columns={columns}
@@ -214,11 +239,13 @@ const Index = () => {
 
 Index.Layout = (props) => {
   const { t } = useBaseHook();
-  return <Layout
-    title={t('pages:documents.index.title')}
-    description={t('pages:documents.index.description')}
-    {...props}
-  />
+  return <>
+    <Layout
+      title={t('pages:documents.index.title')}
+      description={t('pages:documents.index.description')}
+      {...props}
+    />
+  </>
 }
 
 Index.permissions = {
