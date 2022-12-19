@@ -175,7 +175,8 @@
       "issuedBy": "Issued By",
       "issuedDate": "Issued Date",
       "status": "Status",
-      "updatedDate": "Updated Date"
+      "updatedDate": "Updated Date",
+      "action": "Action"
     },
     "form": {
       "formName": "Form Name",

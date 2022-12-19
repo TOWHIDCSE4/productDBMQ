@@ -89,39 +89,6 @@ const Index = () => {
     return documents;
   };
 
-  // useEffect(()=>{
-  //   const fetchData = async (values: any) => {
-  //     if (!values.sorting.length) {
-  //       values.sorting = [{ field: "documents.id", direction: "desc" }];
-  //     }
-  //     let [error, documents]: [any, Document[]] = await to(
-  //       documentService().withAuth().index(values)
-  //     );
-  //     if (error) {
-  //       const { code, message } = error;
-  //       notify(t(`errors:${code}`), t(message), "error");
-  //       return {};
-  //     }
-  
-  //     if(documents){
-  //       const resultObj = JSON.parse(JSON.stringify(documents));
-  //       console.log("documents are ", documents);
-  //       let result = _.countBy(resultObj.data, 'status');
-  //       console.log("result is ", result);
-  //       setStatusCount(result);
-  //       setDocuments(resultObj);
-  //     }
-    
-  //     return documents;
-  //   };
-
-  //   let values = {
-  //     sorting: ''
-  //   }
-
-  //   fetchData(values);
-  // }, [])
-
   const onChangeSelection = (data: any) => {
     if (data.length > 0) setHiddenDeleteBtn(false);
     else setHiddenDeleteBtn(true);
@@ -134,18 +101,6 @@ const Index = () => {
       id: record.id,
     }),
   };
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-      console.log("seach val is ", event.target.value);
-      
-  }
-
-  const downloadConent = (
-    <div>
-      <p style={{cursor: "pointer"}}><span style={{marginRight: '8px'}}><FilePdfOutlined /></span> PDF </p>
-      <p style={{cursor: "pointer"}}><span style={{marginRight: '8px'}}><FileOutlined /></span> CSV </p>
-    </div>
-  );
 
     const columns = [
       {
@@ -178,6 +133,11 @@ const Index = () => {
         key: "documents.issuedDate",
         sorter: true,
         filterable: true,
+        render: (text: string, record: any) =>
+        text ? moment(text).format('LL') : "",
+        renderFilter: ({ column, confirm, ref }: FilterParam) => (
+        <FilterDatePicker column={column} confirm={confirm} ref={ref} />
+      ),
       },
       {
         title: t("pages:documents.table.status"),
@@ -186,9 +146,6 @@ const Index = () => {
         sorter: true,
         filterable: true,
         render: (text, record) => {
-          // console.log("for name text is ", text);
-          // console.log("for name record is ",record)
-
           return (
             <div style={checkStatus(text)}>
                 {text}
@@ -203,20 +160,20 @@ const Index = () => {
         sorter: true,
         filterable: true,
         render: (text: string, record: any) =>
-          text ? moment(text).format("YYYY-MM-DD HH:mm:ss") : "",
+          text ? moment(text).format('LL') : "",
         renderFilter: ({ column, confirm, ref }: FilterParam) => (
           <FilterDatePicker column={column} confirm={confirm} ref={ref} />
         ),
       },
       {
-        title: "",
+        title: t("pages:documents.table.action"),
         key: 'action',
         render: (text, record) => {
+          console.log("selected record is ", record)
           return (
-          <Space size="middle" style={{ float: "right", }}>
-            <Popover content={downloadConent}  trigger="click">
-              <MoreOutlined />
-            </Popover> 
+          <Space size="middle" >
+            <span onClick={() => console.log("clciked record is ", record)} title='Download PDF' style={{cursor: "pointer"}}><FilePdfOutlined style={{ fontSize: "21px" }} /></span>
+            <span title='Download CSV' style={{cursor: "pointer"}}><FileOutlined style={{ fontSize: "21px" }} /></span>
           </Space>
         )}
       }
@@ -224,11 +181,7 @@ const Index = () => {
 
     return <>
       <div className="content">
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <div>
-                  <Input size="middle" onChange={handleSearch} style={{width: 130, marginRight: 10}} placeholder="Serach" prefix={<SearchOutlined />} />
-                  <Input size="middle" style={{width: 130, marginBottom: 20}} placeholder="More Filters" prefix={<FilterOutlined />} />
-                </div>
+            <div style={{ float: "right", marginBottom: '10px' }}>
                 {
                   statusCount && (
                     <div>
