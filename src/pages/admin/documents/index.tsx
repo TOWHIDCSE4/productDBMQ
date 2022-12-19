@@ -12,6 +12,10 @@ import {
   Badge,
   Popover
 } from "antd";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import { UserOptions } from 'jspdf-autotable';
+// import autoTable from 'jspdf-autotable'
 const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
 import useBaseHook from '@src/hooks/BaseHook';
 import { GridTable } from "@src/components/Table";
@@ -22,6 +26,10 @@ import moment from "moment";
 import to from "await-to-js";
 import auth from "@src/helpers/auth";
 import React, { useState, useRef, useEffect } from "react";
+
+interface jsPDFWithPlugin extends jsPDF {
+  autoTable: (options: UserOptions) => jsPDF;
+}
 
 function checkStatus(status: string){
   let colorObj = {  padding: '4px 8px', borderRadius: '5px', color: '#b22222', backgroundColor: '#fff6f6', width: '75px'};
@@ -102,6 +110,28 @@ const Index = () => {
     }),
   };
 
+  const generatePdf = (rowInfo: any)=>{
+    
+    console.log("generatePdf row is ", rowInfo);
+    const doc = new jsPDF('portrait', 'px', 'a4') as jsPDFWithPlugin;
+    const tableTitle = ["Form Name", "Form ID", "Issued By", "Issued Date", "Status", "Action"];
+    const tableRow = [
+        rowInfo.formName,
+        rowInfo.formId,
+        rowInfo.issuedBy,
+        moment(rowInfo.issuedDate).format('LL'),
+        rowInfo.status,
+        moment(rowInfo.updatedDate).format('LL')
+    ];
+    doc.autoTable({
+      head: [tableTitle],
+      body: [tableRow]
+    });
+
+    doc.save(`123.pdf`);
+
+  }
+
     const columns = [
       {
         title: t("pages:documents.table.formName"),
@@ -172,8 +202,8 @@ const Index = () => {
           console.log("selected record is ", record)
           return (
           <Space size="middle" >
-            <span onClick={() => console.log("clciked record is ", record)} title='Download PDF' style={{cursor: "pointer"}}><FilePdfOutlined style={{ fontSize: "21px" }} /></span>
-            <span title='Download CSV' style={{cursor: "pointer"}}><FileOutlined style={{ fontSize: "21px" }} /></span>
+            <span onClick={()=>generatePdf(record)} title='Download PDF' style={{cursor: "pointer"}}><FilePdfOutlined style={{ fontSize: "21px" }} /></span>
+            <span title='Download CSV' style={{cursor: "pointer"}}><FileOutlined style={{ fontSize: "20px" }} /></span>
           </Space>
         )}
       }

@@ -45,6 +45,8 @@
     "ip": "^1.1.5",
     "js-base64": "^2.6.3",
     "jsonwebtoken": "^8.5.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "knex": "^0.95.4",
     "lodash": "^4.17.21",
     "module-alias": "^2.2.2",
