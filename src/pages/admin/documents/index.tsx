@@ -112,7 +112,7 @@ const Index = () => {
 
   const generatePdf = (rowInfo: any)=>{
     const doc = new jsPDF('portrait', 'px', 'a4') as jsPDFWithPlugin;
-    const tableTitle = ["Form Name", "Form ID", "Issued By", "Issued Date", "Status", "Action"];
+    const tableTitle = ["Form Name", "Form ID", "Issued By", "Issued Date", "Status", "Updated Date"];
     const tableRow = [
         rowInfo.formName,
         rowInfo.formId,
