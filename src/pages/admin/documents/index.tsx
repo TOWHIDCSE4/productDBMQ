@@ -128,7 +128,7 @@ const Index = () => {
       body: [tableRow]
     });
 
-    doc.save(`123.pdf`);
+    doc.save(rowInfo.formId);
 
   }
 
