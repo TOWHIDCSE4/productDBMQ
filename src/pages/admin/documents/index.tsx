@@ -111,8 +111,6 @@ const Index = () => {
   };
 
   const generatePdf = (rowInfo: any)=>{
-    
-    console.log("generatePdf row is ", rowInfo);
     const doc = new jsPDF('portrait', 'px', 'a4') as jsPDFWithPlugin;
     const tableTitle = ["Form Name", "Form ID", "Issued By", "Issued Date", "Status", "Action"];
     const tableRow = [
@@ -129,7 +127,6 @@ const Index = () => {
     });
 
     doc.save(rowInfo.formId);
-
   }
 
     const columns = [
@@ -199,7 +196,6 @@ const Index = () => {
         title: t("pages:documents.table.action"),
         key: 'action',
         render: (text, record) => {
-          console.log("selected record is ", record)
           return (
           <Space size="middle" >
             <span onClick={()=>generatePdf(record)} title='Download PDF' style={{cursor: "pointer"}}><FilePdfOutlined style={{ fontSize: "21px" }} /></span>
