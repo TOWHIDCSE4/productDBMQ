@@ -1,0 +1,58 @@
+
+{
+  "schema": [
+  {
+    "fieldName": "firstName",
+    "inputType": "text",
+    "label": "First Name",
+    "defaultValue": "",
+    "config": {
+      "required": "Required"
+    }
+  },
+
+  {
+    "fieldName": "lastName",
+    "inputType": "text",
+    "label": "Last Name",
+    "defaultValue": "",
+    "config": {
+      "required": "Required"
+    }
+  },
+
+  {
+    "fieldName": "phoneNumber",
+    "inputType": "number",
+    "label": "Phone",
+    "defaultValue": 8801,
+    "config": {
+      "required": "Required"
+    }
+  },
+  {
+    "fieldName": "age",
+    "inputType": "number",
+    "label": "Age",
+    "defaultValue": 18,
+    "config": {
+      "required": "Required"
+    }
+  },
+  {
+    "fieldName": "language",
+    "inputType": "select",
+    "label": "Language",
+    "options": [
+      { "value": "english", "label": "English" },
+      { "value": "french", "label": "French" }
+    ],
+    "defaultValue": "english"
+  },
+  {
+    "fieldName": "address",
+    "inputType": "text",
+    "label": "Address",
+    "defaultValue": ""
+  }]
+}
