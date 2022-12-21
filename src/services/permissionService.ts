@@ -1,7 +1,7 @@
 import Base from "./baseService";
 
 class RolePermissionService extends Base {
-  getPermissionByGroupId = async (data: {roleId: number}) => {
+  getPermissionByRoleCode = async (data: {roleCode: string}) => {
     return this.request({
       url: "/api/v1/rolePermissions/getPermissionByGroupId",
       method: "GET",

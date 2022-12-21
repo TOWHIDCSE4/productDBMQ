@@ -76,7 +76,6 @@ const Edit = () => {
           lastName: admin.lastName,
           username: admin.username,
           email: admin.email,
-          tags: admin.tags || [],
         }}
         onFinish={onFinish}
         scrollToFirstError

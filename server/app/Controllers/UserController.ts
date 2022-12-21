@@ -2,7 +2,7 @@ import BaseController from './BaseController'
 import UserModel from '@root/server/app/Models/UserModel'
 import RoleModel from '@app/Models/RoleModel'
 import ApiException from '@app/Exceptions/ApiException'
-
+import { removeVietnameseTones ,hashNumber} from '@helpers/utils'
 export default class AdminController extends BaseController {
   Model: typeof UserModel = UserModel
   RoleModel: any = RoleModel
@@ -16,16 +16,33 @@ export default class AdminController extends BaseController {
       "users.lastName",
       "users.email",
       "users.roleId",
+      "users.code",
       "users.id",
       "roles.name as roleName"
     ]
-
+    let getAccountsItCreated = await this.Model.getAccountsItCreated(auth.id)
+    let getAccountsItCreatedId = getAccountsItCreated.map(item => item.id)
     let result = await this.Model.query()
       .leftJoin('roles', 'users.roleId', 'roles.id')
+      .whereNot('roles.key', 'root')
+      .whereIn('users.id',getAccountsItCreatedId)
       .select(project)
       .getForGridTable(inputs)
 
     return result;
+  }
+
+  async detail() {
+    const allowFields = {
+      id: "string!"
+    }
+    let inputs = this.request.all();
+    let params = this.validate(inputs, allowFields, { removeNotAllow: true });
+
+    let result = await this.Model.getOne({ code: params.id });
+    if (!result) throw new ApiException(6000, "user doesn't exist!")
+    delete result['password']
+    return result
   }
 
   async store() {
@@ -61,9 +78,10 @@ export default class AdminController extends BaseController {
     }
 
     let result = await this.Model.insertOne(params);
-    delete result['password']
-
-    return result
+    let code = hashNumber(String(result.id));
+    let resultUpdate = await this.Model.updateOne(result.id, { code: code });
+    delete resultUpdate['password']
+    return resultUpdate
   }
 
   async update() {

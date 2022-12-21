@@ -4,7 +4,6 @@ import useBaseHook from "@src/hooks/BaseHook";
 import validatorHook from "@src/hooks/ValidatorHook";
 import { LockOutlined } from "@ant-design/icons";
 import roleService from "@src/services/roleService";
-import userService from "@src/services/userService";
 import useSWR from "swr";
 
 const { Option } = Select;
@@ -13,11 +12,10 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
   const { t, getData } = useBaseHook();
   const { validatorRePassword, CustomRegex } = validatorHook();
   const { data: dataT } = useSWR("groupSelect2", () =>
-  roleService().withAuth().select2({ pageSize: -1 })
+    roleService().withAuth().select2({ pageSize: -1 })
   );
 
-  const groups = getData(dataT, "data", []);
-  const children = [];
+  const roles = getData(dataT, "data", []);
 
   return (
     <Row gutter={[24, 0]}>
@@ -142,7 +140,7 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
                 allowClear
                 showSearch
               >
-                {groups.map((item: any) => (
+                {roles.map((item: any) => (
                   <Option value={item.value} key={item.value}>
                     {item.label}
                   </Option>
@@ -152,17 +150,6 @@ const UserForm = ({ form, isEdit }: { form: any; isEdit: boolean}) => {
           </Col>
         </>
       ) : null}
-
-      {/* <Col md={24}>
-        <Form.Item
-          label={t("pages:users.table.tags")}
-          name="tags"
-        >
-          <Select mode="tags" style={{ width: '100%' }} placeholder="Vd: Pháo binh,Đặc nhiệm,...">
-            {children}
-          </Select>
-        </Form.Item>
-      </Col> */}
     </Row>
   );
 };

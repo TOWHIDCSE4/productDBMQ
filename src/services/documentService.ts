@@ -1,25 +1,9 @@
 import Base from "./baseService";
 
-class roleService extends Base {
+class documentsService extends Base {
   index = async (filter: any) => {
     return this.request({
-      url: "/api/v1/roles",
-      method: "GET",
-      data: filter,
-    });
-  };
-
-  select2 = async (filter: any) => {
-    return this.request({
-      url: "/api/v1/roles/select2",
-      method: "GET",
-      data: filter,
-    });
-  };
-
-  selectParent = async (filter: any) => {
-    return this.request({
-      url: "/api/v1/roles/selectParent",
+      url: "/api/v1/documents",
       method: "GET",
       data: filter,
     });
@@ -27,7 +11,7 @@ class roleService extends Base {
 
   create = async (data: any) => {
     return this.request({
-      url: "/api/v1/roles",
+      url: "/api/v1/documents",
       method: "POST",
       data: data,
     });
@@ -35,7 +19,7 @@ class roleService extends Base {
 
   detail = async (data: any) => {
     return this.request({
-      url: "/api/v1/roles/:id",
+      url: "/api/v1/documents/:id",
       method: "GET",
       data: data,
     });
@@ -43,7 +27,7 @@ class roleService extends Base {
 
   edit = async (data: any) => {
     return this.request({
-      url: "/api/v1/roles/:id",
+      url: "/api/v1/documents/:id",
       method: "PUT",
       data: data,
     });
@@ -51,7 +35,7 @@ class roleService extends Base {
 
   delete = async (data: any) => {
     return this.request({
-      url: "/api/v1/roles",
+      url: "/api/v1/documents",
       method: "DELETE",
       data: data,
     });
@@ -59,11 +43,11 @@ class roleService extends Base {
 
   destroy = async (data: any) => {
     return this.request({
-      url: "/api/v1/roles/:id",
+      url: "/api/v1/documents/:id",
       method: "DELETE",
       data: data,
     });
   };
 }
 
-export default () => new roleService();
+export default () => new documentsService();

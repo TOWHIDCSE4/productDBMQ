@@ -2,27 +2,31 @@ import React, { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic';
 import { Button, Checkbox, Table, Spin } from 'antd';
 import permissionService from '@src/services/permissionService';
-import roleGroupPermissionService from '@src/services/rolePermissionService';
+import rolePermissionService from '@src/services/rolePermissionService';
 import to from 'await-to-js'
 import useBaseHook from '@src/hooks/BaseHook'
 import { LeftCircleFilled, SaveFilled } from '@ant-design/icons';
-
+import usePermissionHook from "@src/hooks/PermissionHook";
 const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
 
 const Role = () => {
   let result: any = {}
   const { t, notify, redirect, router } = useBaseHook();
+  const { checkPermission } = usePermissionHook();
   const [loading, setLoading] = useState(false);
   const { query } = router
-  const { id: roleId } = query
+  const { id: roleCode } = query
   const [state, setState] = useState({
     permissions: []
   });
 
+  const updatePer = checkPermission({
+    "adminDecentralization": "U"
+  })
   const fetchData = async () => {
     let idError: any = null;
 
-    if (!roleId) {
+    if (!roleCode) {
       idError = {
         code: 9996,
         message: 'missing ID'
@@ -30,7 +34,7 @@ const Role = () => {
     }
     if (idError) return notify(t(`errors:${idError.code}`), '', 'error')
 
-    let [permissionError, permissions]: any[] = await to(permissionService().withAuth().getPermissionByGroupId({ roleId: roleId }));
+    let [permissionError, permissions]: any[] = await to(permissionService().withAuth().getPermissionByRoleCode({ roleCode: roleCode}));
     if (permissionError) return notify(t(`errors:${permissionError.code}`), '', 'error')
 
     setState({
@@ -43,22 +47,22 @@ const Role = () => {
     fetchData()
   }, []);
 
-  // const onFinish = async (values: any): Promise<void> => {
-  //   setLoading(true)
-  //   let [error, result]: any[] = await to(roleGroupPermissionService().withAuth().update({
-  //     permissions: values,
-  //     roleId: roleId
-  //   }));
+  const onFinish = async (values: any): Promise<void> => {
+    setLoading(true)
+    let [error, result]: any[] = await to(rolePermissionService().withAuth().update({
+      permissions: values,
+      roleCode: roleCode
+    }));
 
-  //   setLoading(false)
+    setLoading(false)
 
-  //   if (error) return notify(t(`errors:${error.code}`), t(error.message), 'error')
+    if (error) return notify(t(`errors:${error.code}`), t(error.message), 'error')
 
-  //   notify(t("messages:message.recordRoleCreated"))
-  //   redirect("frontend.admin.roles.index")
+    notify(t("messages:message.recordRoleCreated"))
+    redirect("frontend.admin.roles.index")
 
-  //   return result
-  // }
+    return result
+  }
 
   const renderCheckbox = (row: any, permission: number) => {
     const onChange = (e: any) => {
@@ -67,8 +71,11 @@ const Role = () => {
     }
 
     const checked = (row.currentValue & permission) === permission
-    // const disabled = (row.value & permission) !== permission
-    return <Checkbox defaultChecked={checked} disabled={true} onChange={onChange}></Checkbox>
+    let disabled = (row.value & permission) !== permission
+    if(!updatePer){
+      disabled = true
+    } 
+    return <Checkbox defaultChecked={checked} disabled={disabled} onChange={onChange}></Checkbox>
   }
 
   const renderPermissionCategory = (category: any) => {
@@ -129,9 +136,12 @@ const Role = () => {
         <Button onClick={() => router.back()} className="btn-margin-right">
           <LeftCircleFilled /> {t('buttons:back')}
         </Button>
-        {/* <Button onClick={() => onFinish(result)} type="primary" htmlType="submit" loading={loading} className="btn-margin-right">
+        {
+          !!updatePer &&  
+        <Button onClick={() => onFinish(result)} type="primary" htmlType="submit" loading={loading} className="btn-margin-right">
           <SaveFilled /> {t('buttons:submit')}
-        </Button> */}
+        </Button>
+        }
       </div>
     </div>
   )
@@ -141,14 +151,14 @@ Role.Layout = (props) => {
   const { t } = useBaseHook();
 
   return <Layout
-    title={t("pages:roleGroups.role.title")}
-    description={t("pages:roleGroups.role.description")}
+    title={t("pages:roles.role.title")}
+    description={t("pages:roles.role.description")}
     {...props}
   />
 }
 
 Role.permissions = {
-  "adminDecentralization": "U"
+  "roles": "R"
 }
 
 export default Role

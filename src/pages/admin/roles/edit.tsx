@@ -7,7 +7,7 @@ import to from 'await-to-js'
 import useBaseHook from '@src/hooks/BaseHook'
 import { LeftCircleFilled, SaveFilled, DeleteFilled } from '@ant-design/icons';
 import usePermissionHook from "@src/hooks/PermissionHook";
-import RoleGroupForm from '@src/components/Admin/Roles/RoleForm';
+import RoleForm from '@src/components/Admin/Roles/RoleForm';
 
 const Layout = dynamic(() => import('@src/layouts/Admin'), { ssr: false })
 
@@ -25,13 +25,13 @@ const formItemLayout = {
 const Edit = () => {
   const { t, notify, redirect, router } = useBaseHook();
   const [loading, setLoading] = useState(false);
-  const [roleGroup, setRoleGroup]: any[] = useState();
+  const [role, setRole]: any[] = useState();
   const [form] = Form.useForm();
   const { checkPermission } = usePermissionHook();
   const { query } = router
 
   const deletePer = checkPermission({
-    "roleGroups": "D"
+    "roles": "D"
   })
 
   const fetchData = async () => {
@@ -44,11 +44,10 @@ const Edit = () => {
       }
     }
     if (idError) return notify(t(`errors:${idError.code}`), '', 'error')
+    let [roleError, role]: [any, Role] = await to(roleService().withAuth().detail({ id: query.id }));
+    if (roleError) return notify(t(`errors:${roleError.code}`), '', 'error')
 
-    let [roleGroupError, roleGroup]: [any, RoleGroup] = await to(roleService().withAuth().detail({ id: query.id }));
-    if (roleGroupError) return notify(t(`errors:${roleGroupError.code}`), '', 'error')
-
-    setRoleGroup(roleGroup)
+    setRole(role)
   }
 
   useEffect(() => {
@@ -59,7 +58,7 @@ const Edit = () => {
   const onFinish = async (values: any): Promise<void> => {
     setLoading(true)
     let [error, result]: any[] = await to(roleService().withAuth().edit({
-      id: roleGroup.id,
+      id: role.id,
       ...values
     }));
 
@@ -67,39 +66,39 @@ const Edit = () => {
 
     if (error) return notify(t(`errors:${error.code}`), '', 'error')
 
-    notify(t("messages:message.recordRoleGroupUpdated"))
+    notify(t("messages:message.recordRoleUpdated"))
     redirect("frontend.admin.roles.index")
 
     return result
   }
 
   const onDelete = async (): Promise<void> => {
-    let [error, result]: any[] = await to(roleService().withAuth().destroy({ id: roleGroup.id }));
+    let [error, result]: any[] = await to(roleService().withAuth().destroy({ id: role.id }));
     if (error) return notify(t(`errors:${error.code}`), '', 'error')
 
-    notify(t('messages:message.recordRoleGroupDeleted'))
+    notify(t('messages:message.recordRoleDeleted'))
     redirect("frontend.admin.roles.index")
 
     return result
   }
 
-  if (!roleGroup) return <div className="content"><Spin /></div>
+  if (!role) return <div className="content"><Spin /></div>
 
   return (
     <div className="content">
       <Form
         {...formItemLayout}
         form={form}
-        name="editRoleGroup"
+        name="editRole"
         initialValues={{
-          name: roleGroup.name,
-          description: roleGroup.description,
-          parentId: roleGroup.parentId
+          name: role.name,
+          description: role.description,
+          parentId: role.parentId
         }}
         onFinish={onFinish}
         scrollToFirstError
       >
-        <RoleGroupForm />
+        <RoleForm />
         <Form.Item wrapperCol={{ span: 24 }} className="text-center">
           <Button onClick={() => router.back()} className="btn-margin-right">
             <LeftCircleFilled /> {t('buttons:back')}
@@ -128,14 +127,14 @@ Edit.Layout = (props) => {
   const { t } = useBaseHook();
 
   return <Layout
-    title={t("pages:roleGroups.edit.title")}
-    description={t("pages:roleGroups.edit.description")}
+    title={t("pages:roles.edit.title")}
+    description={t("pages:roles.edit.description")}
     {...props}
   />
 }
 
 Edit.permissions = {
-  "roleGroups": "U"
+  "roles": "U"
 }
 
 export default Edit

@@ -70,8 +70,8 @@ Create.Layout = (props) => {
   const { t } = useBaseHook();
 
   return <Layout
-    title={t("pages:roleGroups.create.title")}
-    description={t("pages:roleGroups.create.description")}
+    title={t("pages:roles.create.title")}
+    description={t("pages:roles.create.description")}
     {...props}
   />
 }

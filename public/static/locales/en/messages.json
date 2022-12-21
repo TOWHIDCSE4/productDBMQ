@@ -40,12 +40,6 @@
     "recordDeleted": "The data has been deleted successfully!",
     "deleteConfirm": "Are you sure you want to delete this record?",
 
-    "recordRoleGroupCreated": "The account group has been added successfully!",
-    "recordRoleGroupUpdated": "The account group has been updated successfully!",
-    "recordRoleGroupDeleted": "The account group has been deleted successfully!",
-
-    "recordRoleCreated": "The role has updated successfully!",
-
     "recordUserCreated": "The user has been created successfully!",
     "recordUserUpdated": "The user has updated successfully!",
     "recordUserDeleted": "The user has deleted successfully!",
@@ -54,9 +48,9 @@
     "recordAgentUpdated": "The agent has updated successfully!",
     "recordAgentDeleted": "The agent has deleted successfully!",
 
-    "recordGroupCreated": "The group has been added successfully!",
-    "recordGroupUpdated": "The group has been updated successfully!",
-    "recordGroupDeleted": "The group has been deleted successfully!",
+    "recordRoleCreated": "The role has been added successfully!",
+    "recordRoleUpdated": "The role has been updated successfully!",
+    "recordRoleDeleted": "The role has been deleted successfully!",
 
     "enable2FaSuccess": "2FA has been installed successfully. You will need to re-login to continue."
   },

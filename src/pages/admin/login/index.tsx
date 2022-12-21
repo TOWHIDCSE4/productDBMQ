@@ -24,7 +24,7 @@ const Login = () => {
     auth().setAuth(result)
 
     notify(t('messages:message.loginSuccess'))
-    redirect('frontend.admin.dashboard.index')
+    redirect('frontend.admin.documents.index')
 
     return result
   }
@@ -32,7 +32,7 @@ const Login = () => {
   return <LoginComponent
     onSubmit={onFinish}
     loading={loading}
-    link="frontend.admin.dashboard"
+    link="frontend.admin.documents"
     icon={<LeftOutlined />}
     text="home"
   />

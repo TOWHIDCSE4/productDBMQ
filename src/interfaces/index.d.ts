@@ -17,11 +17,12 @@ interface User {
   createdAt: string;
 }
 
-interface RoleGroup {
+interface Role {
   id: number;
   name: string;
   description: string;
   parentId: number;
   key: number;
   createdAt: string;
+  code: string;
 }

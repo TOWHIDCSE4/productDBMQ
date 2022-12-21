@@ -5,7 +5,8 @@ exports.seed = function (knex, Promise) {
       "id": "1",
       "name": "Root",
       "description": "Root",
-      "key": "root"
+      "key": "root",
+      "code" : '5c5652e878449245a480bb2ded80fadd'
     },
   ]
 

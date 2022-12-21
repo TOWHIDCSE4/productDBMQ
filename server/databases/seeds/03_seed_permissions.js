@@ -7,6 +7,34 @@ exports.seed = function (knex, Promise) {
       "description": "root",
       "value": "15",
       "key": "root",
+    },
+    {
+      "id": "2",
+      "name": "users",
+      "description": "users",
+      "value": "15",
+      "key": "users",
+    },
+    {
+      "id": "3",
+      "name": "roles",
+      "description": "roles",
+      "value": "15",
+      "key": "roles",
+    },
+    {
+      "id": "4",
+      "name": "adminDecentralization",
+      "description": "adminDecentralization",
+      "value": "2",
+      "key": "adminDecentralization",
+    },
+    {
+      "id": "5",
+      "name": "dashboard",
+      "description": "dashboard",
+      "value": "4",
+      "key": "dashboard",
     }
   ]
 

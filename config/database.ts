@@ -6,5 +6,4 @@ export default {
   DB_PASS: process.env.DB_PASS || "123456",
   DB_NAME: process.env.DB_NAME || "root",
   DB_POOL_SIZE: process.env.DB_POOL_SIZE || 10,
-  MONGODB_URI: process.env.MONGODB_URI || "mongodb://localhost:27017",
 };

@@ -1,4 +1,5 @@
 node_modules
+.env
 .vscode
 .next
 logs
@@ -6,4 +7,7 @@ package-lock.json
 yarn.lock
 dist
 tmp
+pgdata
+postgresql.conf
+public/upload
 yarn-error.log

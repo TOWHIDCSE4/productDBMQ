@@ -19,6 +19,10 @@ Route.group(() => {
   Route.get("/routes", "RouteController.index").name('routes.index')
   // ---------------------------------- End Route Routes -----------------------------------//
 
+  // ---------------------------------- Route DocumentController ---------------------------------------//
+  Route.get("/documents", "DocumentController.index").name('documents.index')
+  // ---------------------------------- End Route DocumentController -----------------------------------//
+
   Route.group(() => {
     Route.post("/changePassword", "AuthController.changePassword").name("auth.changePassword")
     Route.post("/logout", "AuthController.logout").name('auth.logout')
@@ -26,7 +30,7 @@ Route.group(() => {
     Route.post("/refreshToken", "AuthController.refreshToken").name('auth.refreshToken')
     Route.post("/auth/getRoleBotUser", "AuthController.getRoleBotUser").name('auth.getRoleBotUser')
     // ---------------------------------- User Routes ---------------------------------------//
-    Route.resource("/users", "UserController").name('users')
+    Route.resource("/users", "UserController").name('users') // CRUD
     Route.get("/users/generateOTP", "UserController.generateOTP").name('users.generateOTP')
     Route.post("/users/submitOTP", "UserController.submitOTP").name('users.submitOTP')
     Route.get("/users/getTags", "UserController.getTags").name('users.getTags')

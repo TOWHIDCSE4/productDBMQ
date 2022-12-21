@@ -21,25 +21,24 @@ const Index = () => {
   const { checkPermission } = usePermissionHook();
 
   const createPer = checkPermission({
-    "roleGroups": "C"
+    "roles": "C"
   })
   const updatePer = checkPermission({
-    "roleGroups": "U"
+    "roles": "U"
   })
   const deletePer = checkPermission({
-    "roleGroups": "D"
+    "roles": "D"
   })
-
   const columns = [
     {
-      title: t('pages:roleGroups.table.name'),
+      title: t('pages:roles.table.name'),
       dataIndex: 'name',
       key: 'roles.name',
       sorter: true,
       filterable: true,
       render: (text: string, record: any) => {
         return updatePer ? (
-          <a onClick={() => redirect('frontend.admin.roles.edit', { id: record.id })}>
+          <a onClick={() => redirect('frontend.admin.roles.edit', { id: record.code })}>
             <span className="show-on-hover">
               {record.name}
               <EditOutlined className="show-on-hover-item" />
@@ -49,21 +48,22 @@ const Index = () => {
       }
     },
     {
-      title: t("pages:roleGroups.table.description"),
+      title: t("pages:roles.table.description"),
       dataIndex: 'description',
       key: 'roles.description',
       sorter: true,
       filterable: true,
     },
-    // {
-    //   title: t("pages:roleGroups.table.parent"),
-    //   dataIndex: 'parentName',
-    //   key: 'roles.parentId',
-    //   sorter: true,
-    //   filterable: true
-    // },
     {
-      title: t("pages:roleGroups.table.createdAt"),
+      title: t("pages:roles.table.parent"),
+      dataIndex: 'parentName',
+      key: 'roles.parentId',
+      sorter: true,
+      filterable: true,
+      render: (text: string, record: any) => text == 'Root' ? "":text ,
+    },
+    {
+      title: t("pages:roles.table.createdAt"),
       dataIndex: 'createdAt',
       key: 'roles.createdAt',
       sorter: true,
@@ -73,13 +73,13 @@ const Index = () => {
         <FilterDatePicker column={column} confirm={confirm} ref={ref} />
     },
     {
-      title: t("pages:roleGroups.table.decentralization"),
+      title: t("pages:roles.table.decentralization"),
       dataIndex: 'decentralization',
       key: "decentralization",
       render: (text: string, record: any) => {
         return (<>
           {(createPer || updatePer)? (
-            <Button onClick={() => redirect("frontend.admin.roles.role", { id: record.id })} type="primary">
+            <Button onClick={() => redirect("frontend.admin.roles.role", { id: record.code })} type="primary">
               {/* <PlusCircleOutlined /> */}
               {t('buttons:decentralization')}
             </Button>
@@ -103,7 +103,7 @@ const Index = () => {
       ]
     }
 
-    let [error, roles]: [any, RoleGroup[]] = await to(roleService().withAuth().index(values))
+    let [error, roles]: [any, Role[]] = await to(roleService().withAuth().index(values))
     if (error) {
       const { code, message } = error
       notify(t(`errors:${code}`), '', 'error')
@@ -117,7 +117,7 @@ const Index = () => {
     let [error, result]: any[] = await to(roleService().withAuth().delete({ ids: selectedIds }));
     if (error) return notify(t(`errors:${error.code}`), '', 'error')
 
-    notify(t("messages:message.recordRoleGroupDeleted"));
+    notify(t("messages:message.recordRoleDeleted"));
 
     if (tableRef.current !== null) {
       tableRef.current.reload()
@@ -167,14 +167,14 @@ Index.Layout = (props) => {
   const { t } = useBaseHook();
 
   return <Layout
-    title={t("pages:roleGroups.index.title")}
-    description={t("pages:roleGroups.index.description")}
+    title={t("pages:roles.index.title")}
+    description={t("pages:roles.index.description")}
     {...props}
   />
 }
 
 Index.permissions = {
-  "roleGroups": "R"
+  "roles": "R"
 };
 
 export default Index

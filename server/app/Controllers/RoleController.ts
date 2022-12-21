@@ -3,9 +3,8 @@ import RoleModel from '@root/server/app/Models/RoleModel'
 import UserModel from '@root/server/app/Models/UserModel'
 import ApiException from '@app/Exceptions/ApiException'
 import constantConfig from '@config/constant'
-import { removeVietnameseTones } from '@helpers/utils'
+import { removeVietnameseTones ,hashNumber} from '@helpers/utils'
 import _ from 'lodash'
-
 const { roleKey } = constantConfig
 
 export default class RoleController extends BaseController {
@@ -14,25 +13,28 @@ export default class RoleController extends BaseController {
 
   async index() {
     const inputs = this.request.all();
+    const { auth } = this.request;
     const project = ['roles.*', 'ag.name as parentName']
-
-    let result = await this.Model.query()
+    let ChildrenRoles = await this.Model.getChildrenRoles(auth.roleId)
+    let ChildrenRolesIds = ChildrenRoles.map(item => item.id)
+    let query = this.Model.query()
       .leftJoin('roles as ag', 'roles.parentId', 'ag.id')
+      .whereIn("roles.parentId", ChildrenRolesIds)
       .whereNot('roles.key', 'root')
       .select(project)
-      .getForGridTable(inputs);
+    let result = await query.getForGridTable(inputs);
 
     return result;
   }
 
   async detail() {
     const allowFields = {
-      id: "number!"
+      id: "string!"
     }
     let inputs = this.request.all();
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
 
-    let result = await this.Model.getById(params.id);
+    let result = await this.Model.getOne({ code: params.id });
     if (!result) throw new ApiException(6000, "Role Group doesn't exist!")
 
     return result
@@ -40,14 +42,31 @@ export default class RoleController extends BaseController {
 
   async select2() {
     const data = this.request.all()
+    const { auth } = this.request;
+    const allowFields = {
+      id: "string"
+    }
+    let inputs = this.request.all();
+    let params = this.validate(inputs, allowFields, { removeNotAllow: true });
     const project = [
       'name as label',
       'id as value'
     ]
-    let result = await this.Model.query()
+    let ChildrenRoles = await this.Model.getChildrenRoles(auth.roleId)
+    let ChildrenRolesIds = ChildrenRoles.map(item => item.id)
+    let exist = await this.Model.getById(auth.roleId);
+    let query = this.Model.query()
+    .whereIn("id", ChildrenRolesIds) 
+    if(exist.key != 'root'){
+      query.whereNot('roles.key', 'root')
+    }
+    if(params.id && params.id != 'undefined'){
+      let idDis = await this.Model.getOne({ code: params.id });
+      query.whereNot('roles.id', idDis.id)
+    }
+    let result = await query
       .select(project)
       .getForGridTable(data);
-
     return result;
   }
 
@@ -62,16 +81,16 @@ export default class RoleController extends BaseController {
     let params = this.validate(inputs, allowFields, { removeNotAllow: true });
 
     let name = params.name.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
-
     let exist = await this.Model.findExist(name, 'name')
-    if (exist) throw new ApiException(6002, "Role Group name already exists!")
+    if (exist) throw new ApiException(6002, "Role name already exists!")
 
-    // let parentExist = await this.Model.getById(params.parentId);
-    // if (!parentExist) throw new ApiException(6000, "Role Group doesn't exist!")
+    let parentExist = await this.Model.getById(params.parentId);
+    if (!parentExist) throw new ApiException(6000, "Role doesn't exist!")
     let key = removeVietnameseTones(params.name)
     let result = await this.Model.insertOne({ ...params, createdBy: auth.id,key });
-
-    return result
+    let code = hashNumber(String(result.id));
+    let resultUpdate = await this.Model.updateOne(result.id, { code: code });
+    return resultUpdate
   }
 
   async update() {
@@ -91,16 +110,12 @@ export default class RoleController extends BaseController {
     let exist = await this.Model.getById(id);
     if (!exist) throw new ApiException(6000, "Role doesn't exist!");
 
-    let existUserGroupName = await this.Model.findExist(params.name, 'name');
-    if (existUserGroupName && existUserGroupName.id != id) {
+    let existRoleName = await this.Model.findExist(params.name, 'name');
+    if (existRoleName && existRoleName.id != id) {
       throw new ApiException(6002, "Role name already exists!");
     }
-
-    if (parentId) {
-      let parentExist = await this.Model.getById(params.parentId);
-      if (!parentExist) throw new ApiException(6000, "Role doesn't exist!")
-    }
-
+    let parentExist = await this.Model.getById(parentId);
+    if (!parentExist) throw new ApiException(6000, "Role doesn't exist!")
     let result = await this.Model.updateOne(id, { ...params, updatedBy: auth.id });
 
     return result

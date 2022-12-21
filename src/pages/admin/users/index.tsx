@@ -102,13 +102,12 @@ const Index = () => {
       title: t("pages:action"),
       key: 'action',
       render: (text, record) => {
-        console.log("record",record)
         return (
         <Space size="middle">
           <a
             type="primary"
             className="btn-top"
-            onClick={() => redirect("frontend.admin.users.edit", { id: record.id })}
+            onClick={() => redirect("frontend.admin.users.edit", { id: record.code })}
           >
             <EditOutlined />
           </a>
